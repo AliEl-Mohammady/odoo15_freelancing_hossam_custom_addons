@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_mrp_production_form" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="before">
+                <field name="delivery_date" string="Delivery Date"/>
+            </xpath>
+            <xpath expr="//field[@name='bom_id']" position="after">
+                <field name="mo_arrangement"/>
+                <field name="related_mo" readonly="1"/>
+                <field name="opt_num"/>
+                <field name="opt_index"/>
+                <field name="product_width" string="Width"/>
+                <field name="product_length" string="Length"/>
+                <field name="product_area" string="Area"/>
+                <field name="random_qr_code_number" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="serial_number" string="SNO."/>
+                <field name="operations_ids" string="Operations" widget="many2many_tags"/>
+                <field name="partner_id" string="Partner SO"/>
+                <field name="sale_order_id" string="Origin SO"/>
+                <field name="desc_ids" widget="many2many_tags" string="Desc IDs"/>
+                <field name="so_line_id" string="SO Line" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='components']//field[@name='product_id']" position="after">
+                <field name="product_width" string="Width"/>
+                <field name="product_length" string="length"/>
+                <field name="product_area" string="Total Area"/>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="view_mrp_production_tree_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="opt_num" string="OPT Num"/>
+                <field name="opt_index" string="OPT Index"/>
+                <field name="sale_order_id" string="Origin SO"/>
+                <field name="product_width" string="Width"/>
+                <field name="product_length" string="Length"/>
+                <field name="product_area" string="Area" sum="1"/>
+            </xpath>
+        </field>
+        </record>
+
+
+    <record id="seq_random_qr_code_num" model="ir.sequence">
+        <field name="name">Random Qr Code</field>
+        <field name="code">random.qr.code.num</field>
+        <field name="prefix">827</field>
+        <field name="suffix">759</field>
+        <field name="padding">2</field>
+        <field name="number_increment" eval="1"/>
+    </record>
+</odoo>
+
+
+

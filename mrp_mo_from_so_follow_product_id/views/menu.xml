@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="root_menu_product_search_id"
+        name="Product ID"
+        web_icon="mrp_mo_from_so_follow_product_id,static/description/icon.png"
+        action="mrp_mo_from_so_follow_product_id.product_search_window"
+    />
+
+
+</odoo>

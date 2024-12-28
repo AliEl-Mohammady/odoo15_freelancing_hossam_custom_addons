@@ -1,0 +1,41 @@
+<odoo>
+    <record id="wizard_accountcreation_view_form" model="ir.ui.view">
+        <field name="name">Account Report Creation</field>
+        <field name="model">account.report.creation</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="partner_id" string="Customer"/>
+                        <field name="start_date" string="Start Date"/>
+                        <field name="end_date" string="End Date"/>
+                        <field name="paid_only" string="Paid Only"/>
+                        <field name="delivered_only" string="Delivered Only"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Invoice Report" name="account_report_generation" type="object" class="btn-primary"/>
+                    <button string="Sales Report" name="sale_report_generation" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="wizard_acc_creation_window">
+        <field name="name">account report</field>
+        <field name="res_model">account.report.creation</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="create_wizard_acc_menu"
+              name="Account Report Wizard"
+              action="wizard_acc_creation_window"
+              parent="account.menu_finance_receivables"
+              sequence="6"/>
+
+</odoo>
+

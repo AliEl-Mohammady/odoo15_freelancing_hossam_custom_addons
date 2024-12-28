@@ -1,0 +1,94 @@
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+
+<odoo>
+    <data>
+        <template id="external_layout">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-if="o and 'company_id' in o and o.company_id.sudo()">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-if="company.external_report_layout_id" t-call="{{company.external_report_layout_id.sudo().key}}">
+                <t t-out="0"/>
+            </t>
+            <t t-else="else" t-call="web.external_layout_standard">
+                <t t-out="0"/>
+            </t>
+
+        </template>
+
+
+        <record id="paperformat_custom_receipt" model="report.paperformat">
+            <field name="name">Custom Receipt</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">150</field>
+            <field name="page_width">80</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">5</field>
+            <field name="dpi">80</field>
+        </record>
+
+        <template id="sale_order_receipt_inherit" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//t//div[@class='page']" position="after">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                    function updatePaperFormatHeight() {
+                    var contentHeight = $('.page').height();
+                    var paperformat_id = 'paperformat_custom_receipt';
+
+                    odoo.define('sale_order_receipt_custom.sale_order_receipt', function (require) {
+                    "use strict";
+                    var rpc = require('web.rpc');
+
+                    rpc.query({
+                    model: 'report.paperformat',
+                    method: 'write',
+                    args: [[paperformat_id], {'page_height': contentHeight}],
+                    }).then(function(result) {
+                    console.log("Paper format updated successfully:", result);
+                    }).fail(function(error) {
+                    console.error("Failed to update paper format:", error);
+                    });
+                    });
+                    }
+                    updatePaperFormatHeight();
+                    });
+                </script>
+            </xpath>
+        </template>
+
+
+        <!-- Inherit existing report action -->
+        <record id="sale.action_report_saleorder" model="ir.actions.report">
+            <field name="name">Quotation / Order</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sale.report_saleorder</field>
+            <field name="report_file">sale.report_saleorder</field>
+            <field name="print_report_name">(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or
+                'Order - %s' % (object.name)
+            </field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="sale_order_receipt_custom.paperformat_custom_receipt"/>
+        </record>
+    </data>
+</odoo>
+
+

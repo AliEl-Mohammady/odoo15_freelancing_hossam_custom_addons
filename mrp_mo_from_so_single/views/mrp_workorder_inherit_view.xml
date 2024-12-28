@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+
+
+
+    <record id="view_mrp_workorder_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.workorder.form.inherit</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="so_id" string="Origin SO"/>
+                <field name="opt_num" string="OPT Num"/>
+                <field name="opt_index" string="OPT Index"/>
+                <field name="product_width" string="Width"/>
+                <field name="product_length" string="Length"/>
+                <field name="area_type"/>
+                <field name="line_area_total"/>
+                <field name="delivery_date"/>
+            </xpath>
+            <xpath expr="//button[@name='button_unblock']" position="after">
+                <button name="action_break_glass" type="object" string="Break" context="{'default_workcenter_id': workcenter_id}" class="btn-info"
+                        attrs="{'invisible': [('state', 'in', ('done','cancel'))]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="mrp.mrp_workorder_todo">
+        <field name="name">Work Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.workorder</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph,gantt</field>
+        <field name="search_view_id" ref="mrp.view_mrp_production_workorder_form_view_filter"/>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_ready': True, 'search_default_progress': True, 'search_default_pending': True}</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No work orders to do!
+          </p><p>
+            Work orders are operations to do as part of a manufacturing order.
+            Operations are defined in the bill of materials or added in the manufacturing order directly.
+          </p>
+        </field>
+    </record>
+
+
+</odoo>
+
+
+

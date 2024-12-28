@@ -1,0 +1,77 @@
+<odoo>
+
+
+    <template id="account_move_total_inherit_reports">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="mrp_mo_from_so_single.report_account_move_total_report_template_main"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_account_move_total_report_template_main">
+        <div class="page">
+            <div class="oe_structure"/>
+            <style>
+            @font-face {
+            font-family: 'Phones_font,serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\tahoma.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\Lalezar-Regular.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\ReadexPro-Bold.ttf.ttf')
+            format('truetype');
+            }
+        </style>
+            <div class="row">
+                <div class="col-8" dir="ltr" style="font-size: 21px; font-weight: bold;font-family:Arabic_bold,sans-serif;">
+                    <br/>
+                    <br/>
+                    Invoice # <t t-esc="doc.name"/>
+                </div>
+                <div class="col-4" style="text-align:left">
+                    <t t-esc="doc.partner_id.name"/><br/>
+                    <t t-esc="doc.partner_id.street"/><br/>
+                    <t t-esc="doc.partner_id.city"/><br/>
+                    <t t-esc="doc.partner_id.country_id.name"/><br/>
+                </div>
+            </div>
+            <div class="row"
+                 style="border-bottom :1px solid #097dd5;font-size: 19px; font-weight: bold;font-family:Arabic_bold,sans-serif;padding-top:15px">
+                <div class="col-4" style="text-align:left">الوصف</div>
+                <div class="col-2" style="text-align:center">الكمية</div>
+                <div class="col-3" style="text-align:center">المساحة الكلية</div>
+                <div class="col-3" style="text-align:center">الأجمالى</div>
+            </div>
+             <t t-foreach="doc.get_custom_report_data()" t-as="line">
+                 <div class="row" style="font-size: 12px;font-family:Arabic_bold,sans-serif;padding-top:10px">
+                    <div class="col-4"><t t-esc="line['product']"/> </div>
+                    <div class="col-2 text-center"><t t-esc="line['qty']"/></div>
+                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(line['area'])"/></div>
+                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(line['amount'])"/></div>
+                 </div>
+             </t>
+        </div>
+    </template>
+
+
+
+    <record id="account_move_total_inherit_report_ids" model="ir.actions.report">
+        <field name="name">Invoice Totally Report</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mrp_mo_from_so_single.account_move_total_inherit_reports</field>
+        <field name="report_file">mrp_mo_from_so_single.account_move_total_inherit_report</field>
+        <field name="print_report_name">'Invoice Totally Report'</field>
+        <field name="binding_model_id" ref="mrp_mo_from_so_single.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

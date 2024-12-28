@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="view_sale" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree//field[@name='product_uom_qty']" position="after">
+                    <field name="quantity_to_invoice" attrs="{'invisible':[('quantity_invoiced','>=',100)]}"/>
+                </xpath>
+                <xpath expr="//tree//field[@name='qty_invoiced']" position="before">
+                    <field name="quantity_invoiced"/>
+                </xpath>
+                <xpath expr="//field//tree//field[@name='qty_delivered']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//field//tree//field[@name='qty_invoiced']" position="attributes">
+                    <attribute name="optional">hide</attribute>
+                </xpath>
+                <xpath expr="//field//tree//field[@name='qty_delivered']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('quantity_invoiced','>=',100)]}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+</odoo>

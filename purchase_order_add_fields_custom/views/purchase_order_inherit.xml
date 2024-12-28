@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <record id="purchase_order_add_fields_view" model="ir.ui.view">
+            <field name="name">purchase.order.add.fields.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="after">
+                    <field name="length" attrs="{'readonly':[('state','=','purchase')]}"/>
+                    <field name="width" attrs="{'readonly':[('state','=','purchase')]}"/>
+                </xpath>
+                <xpath expr="//div[@name='reminder']" position="after">
+                    <field name="depth" attrs="{'readonly':[('state','=','purchase')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+</odoo>

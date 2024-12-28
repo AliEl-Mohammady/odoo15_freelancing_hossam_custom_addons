@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <record id="view_stock_scrap_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.scrap.form.inherit</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="so_id" string="Origin SO"/>
+                    <field name="operation_name"/>
+                    <field name="workcenter_id"/>
+                    <field name="responsible_person"/>
+                    <field name="break_reason"/>
+                    <field name="opt_num" string="OPT Num"/>
+                    <field name="opt_index" string="OPT Index"/>
+                    <field name="product_width" string="Width"/>
+                    <field name="product_length" string="Length"/>
+                    <field name="area_type"/>
+                    <field name="line_area_total"/>
+                    <field name="delivery_date"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_stock_scrap_form_inherit" model="ir.ui.view">
+            <field name="name">stock.scrap.form.inherit</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('o_row')]" position="after">
+                    <field name="so_id" string="Origin SO"/>
+                    <field name="opt_num" string="OPT Num"/>
+                    <field name="opt_index" string="OPT Index"/>
+                    <field name="delivery_date"/>
+                    <field name="operation_name"/>
+                    <field name="workcenter_id"/>
+                    <field name="responsible_person"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="product_width" string="Width"/>
+                    <field name="product_length" string="Length"/>
+                    <field name="line_area_total"/>
+                    <field name="break_reason"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_scrap_form2_inherit" model="ir.ui.view">
+            <field name="name">stock.scrap.form2.inherit</field>
+            <field name="model">stock.scrap</field>
+            <field name="inherit_id" ref="stock.stock_scrap_form_view2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_id']" position="after">
+                    <field name="opt_index" />
+                    <field name="opt_num"/>
+                    <field name="product_width"/>
+                    <field name="product_length"/>
+                    <field name="area_type"/>
+                    <field name="line_area_total"/>
+                    <field name="break_reason"/>
+                </xpath>
+                <xpath expr="//div" position="after">
+                    <field name="so_id"/>
+                    <field name="delivery_date"/>
+                    <field name="operation_name"/>
+                    <field name="workcenter_id"/>
+                    <field name="responsible_person"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+
+
+</odoo>
+
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="cash_root"
+        name="Cashes"
+        web_icon="cash_register_menu_custom,static/description/icon.png"
+        sequence="56"/>
+
+    <menuitem
+        id="cash_registers_master"
+        name="Cash Registers"
+        parent="cash_root"
+        sequence="0"
+        action="account.action_view_bank_statement_tree"
+    />
+
+
+
+
+
+</odoo>

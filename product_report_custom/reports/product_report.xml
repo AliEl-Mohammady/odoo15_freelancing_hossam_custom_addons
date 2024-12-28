@@ -1,0 +1,92 @@
+<odoo>
+
+    <template id="header_footer_temp_products">
+        <div class="header">
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-out="0"/>
+        </div>
+        <div class="footer o_standard_footer">
+        </div>
+    </template>
+
+    <template id="get_lang_temp">
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+             t-att-data-oe-id="o and o.id" t-att-data-oe-lang="'en_US'">
+            <t t-raw="0"/>
+        </div>
+    </template>
+
+    <template id="product_template_report">
+        <t t-call="web.html_container">
+            <t t-call="product_report_custom.header_footer_temp_products">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="product_report_custom.report_product_template_report_template_main"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_product_template_report_template_main">
+        <t t-call="product_report_custom.get_lang_temp"/>
+        <div class="page" dir="rtl">
+            <div class="oe_structure"/>
+            <br/>
+            <br/>
+            <br/>
+            <div style="border:10px solid #720123;padding:35px;">
+                <style>
+                    @font-face {
+                    font-family: 'Arabic_bold';
+                    src: url('/product_report_custom/static/src/Font/SST Arabic Bold.ttf') format('truetype');
+                    font-weight:bold;
+                    }
+                </style>
+                <div class="text-center" style="font-size:60px;font-weight:bold">
+                    <div style="border-bottom: 8px solid #720123;margin-right:270px;width:200px;font-family:Arabic_bold;color: #720123;">
+                        الموديل
+                    </div>
+                    <div class="text-center" style="padding-top:10px">
+                        <h1>
+                            <t t-esc="doc.name"/>
+                        </h1>
+                    </div>
+                </div>
+                <br/>
+                <br/>
+                <div style="font-size:60px;font-weight:bold">
+                    <div style="border-bottom: 8px solid #720123;margin-right:300px;width:140px;font-family:Arabic_bold;color: #720123;">
+                        الكود
+                    </div>
+                    <t t-if="doc.vendor_code">
+                        <div class="text-center">
+                            <img t-att-src="'/report/barcode/Code128/'+doc.vendor_code" style="width:600px;height:70px;padding-top:10px"
+                                 alt="Barcode"/>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="text-center" style="padding-top:10px">
+                            <h5>لا يوجد كود لهذا المنتج</h5>
+                        </div>
+                    </t>
+                    <div class="text-center" style="font-family:Arabic_bold;">
+                        <h1 t-esc="doc.vendor_code"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <record id="product_template_report_action" model="ir.actions.report">
+        <field name="name">عرض المنتج</field>
+        <field name="model">product.template</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_report_custom.product_template_report</field>
+        <field name="report_file">product_report_custom.product_template_report</field>
+        <field name="print_report_name">'Product Report Details'</field>
+        <field name="binding_model_id" ref="product_report_custom.model_product_template"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

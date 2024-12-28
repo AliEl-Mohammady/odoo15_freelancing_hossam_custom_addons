@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_quantity_wizard_form_inherited" model="ir.ui.view">
+        <field name="name">mo.stock.quantity.wizard.form.inherited</field>
+        <field name="model">stock.quantity.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="location_id" string="Destination location"/>
+                    </group>
+                    <notebook>
+                        <page string="Stock On Hand">
+                            <field name="stock_quant_ids">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="location_id"/>
+                                    <field name="inventory_quantity_auto_apply"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button type="object" name="transfer_products" string="Transfer" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_qty_inherit" model="ir.actions.act_window">
+        <field name="name">transfer product action</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.quantity.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_stock_quant_ids': active_ids}</field>
+    </record>
+</odoo>

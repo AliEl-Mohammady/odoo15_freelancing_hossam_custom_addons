@@ -1,0 +1,235 @@
+<odoo>
+
+    <template id="header_footer_sale_temp">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <style>
+            @font-face {
+            font-family: 'Phones_font,serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\tahoma.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\Lalezar-Regular.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\ReadexPro-Bold.ttf.ttf')
+            format('truetype');
+            }
+        </style>
+        <div class="header">
+            <div style="text-align:center;font-size: 25px; font-weight: bold;font-family:Arabic_bold,sans-serif;"><t t-esc="doc.company_id.name"/></div>
+            <div class="text-center">
+                <div class="row" style="border-bottom :1px solid #097dd5">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-start"
+                             alt="Logo" width="160px" height="160px"/>
+                    </div>
+                    <div class="col-5"/>
+                    <div class="col-4 " style="font-family: Phones_font,serif;text-align:left">
+                        <span style="color: red">Tel :</span>
+                        <span style="color: blue"><t t-esc="doc.company_id.phone"/> </span>
+                        <br/>
+                        <span style="color: red">Tel :</span>
+                        <span style="color: blue"><t t-esc="doc.company_id.mobile"/></span>
+                        <br/>
+                        <span style="color: red">Site :</span>
+                        <a t-att-href="doc.company_id.website" target="_blank">
+                            <t t-esc="doc.company_id.website"/>
+                        </a>
+                        <br/>
+                        <span style="color: red">Headquarters :</span>
+                        <span style="color: #097dd5">
+                            <t t-esc="doc.company_id.street"/>,
+                            <t t-esc="doc.company_id.city"/>,
+                            <t t-esc="doc.company_id.state_id.name"/>,
+                            <t t-esc="doc.company_id.country_id.name"/>
+                        </span>
+                        <br/>
+                    </div>
+                </div>
+                <div class="row" style="border-bottom :1px solid #097dd5;padding-top:10px">
+                    <div class="col-8" style="text-align:left">
+                        <div class="row" style="font-size: 20px; font-weight: bold;font-family:Arabic_bold,sans-serif">
+                            <div class="col-3">Customer</div>
+                            <div class="col-9" style="margin-left:-40px">: <t t-esc="doc.partner_id.name"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">Email</div>
+                            <div class="col-9" style="margin-left:-40px">:  <t t-esc="doc.partner_id.email"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3">Telephone</div>
+                            <div class="col-9" style="margin-left:-40px">:  <t t-esc="doc.partner_id.phone"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3">Customer Ref</div>
+                            <div class="col-9" style="margin-left:-40px">:  <t t-esc="doc.customer_ref"/></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-3">Project</div>
+                            <div class="col-9" style="margin-left:-40px">: </div>
+                        </div>
+                    </div>
+                    <div class="col-4"  style="text-align: left">
+                        <div class="row" style="font-size: 20px; font-weight: bold;font-family:Arabic_bold,sans-serif">
+                            <div class="col-4" style="margin-left:15px"> PI NO</div>
+                            <div class="col-9" >: 100103867</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4" style="margin-left:15px">Date</div>
+                            <div class="col-9">:  <t t-esc="doc.date_order.date()"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4" style="margin-left:15px">Contact</div>
+                            <div class="col-9">: <t t-esc="doc.partner_id.street"/>, <t t-esc="doc.partner_id.city"/>, <t t-esc="doc.partner_id.state_id.name"/>, <t t-esc="doc.partner_id.country_id.name"/></div>
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+                <div class="row" style="border-bottom :1px solid #097dd5;font-size: 15px; font-weight: bold;font-family:Arabic_bold,sans-serif;padding-top:10px">
+                    <div class="col-1">رقم القطعة</div>
+                    <div class="col-3">التوصيف</div>
+                    <div class="col-1">العدد</div>
+                    <div class="col-3">الطول/العرض</div>
+                    <div class="col-1">الكمية</div>
+                    <div class="col-1">سعر المتر</div>
+                    <div class="col-2">الأجمالى</div>
+                </div>
+            </div>
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-out="0"/>
+        </div>
+        <div class="footer o_standard_footer">
+            <div class="row text-center">
+                <t t-set="total_quantity" t-value="0"/>
+                <t t-set="total_amount" t-value="0"/>
+                <t t-set="total_area" t-value="0"/>
+                <t t-foreach="doc.order_line" t-as="line">
+                    <t t-set="total_quantity" t-value="total_quantity+line.product_uom_qty"/>
+                    <t t-set="total_amount" t-value="total_amount+line.price_subtotal"/>
+                    <t t-set="total_area" t-value="total_area+line.line_area_total"/>
+                </t>
+                <div class="col-4">Total of Area : <t t-esc="'{:,.2f}'.format(total_area)"/></div>
+                <div class="col-4">Total Qty : <t t-esc="'{:,.2f}'.format(total_quantity)"/></div>
+                <div class="col-4">Total Amount : <t t-esc="'{:,.2f}'.format(total_amount)"/></div>
+            </div>
+            <br/>
+
+            <div class="row"  style="border-top :3px dashed black;">
+                <div class="col-9">(Please refer the Terms and Conditions attach)</div>
+                <div class="col-3 text-end">
+                    <div t-if="report_type == 'pdf'" class="text-muted" style="font-size :20px;">
+                        Page:
+                        <span class="page"/>of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="sale_order_inherit_reports">
+        <t t-call="web.html_container">
+            <t t-call="mrp_mo_from_so_single.header_footer_sale_temp">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="mrp_mo_from_so_single.report_sale_order_report_template_main"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_sale_order_report_template_main">
+        <div class="page">
+            <div class="oe_structure"/>
+            <br/>
+            <br/>
+            <t t-set="total_price_unit" t-value="0"/>
+            <t t-foreach="doc.order_line" t-as="line">
+                <div style="border-bottom :1px dashed black;">
+                    <div class="row text-center" style="font-family:Arabic_bold,sans-serif;padding-top:10px;font-size:15px">
+                        <div class="col-1"><t t-esc="line.serial_number"/></div>
+                        <div class="col-3"><t t-esc="line.product_id.name"/></div>
+                        <div class="col-1"><t t-esc="line.product_uom_qty"/></div>
+                        <div class="col-3"><t t-esc="line.product_width"/>/<t t-esc="line.product_length"/></div>
+                        <div class="col-1"><t t-esc="'{:,.2f}'.format(line.line_area_total)"/></div>
+                        <div class="col-1"><t t-esc="'{:,.2f}'.format(line.price_unit)"/></div>
+                        <div class="col-2"/>
+                    </div>
+                    <t t-foreach="line.subline_ids" t-as="subline">
+                        <t t-foreach="subline.operation_subline_ids" t-as="oper">
+                            <div class="row text-center" style="font-size:12px">
+                                <div class="col-1"/>
+                                <div class="col-3"><t t-esc="oper.name"/></div>
+                                <div class="col-1"/>
+                                <div class="col-3"/>
+<!--                                <div class="col-1"><t t-esc="'{:,.2f}'.format(oper.product_area)"/></div>-->
+                                <div class="col-2" style="text-align: right"><t t-esc="'{:,.2f}'.format(oper.price_per_meter)"/></div>
+                                <div class="col-2"><t t-esc="'{:,.2f}'.format(oper.total_price)"/></div>
+                            </div>
+                            <t t-set="total_price_unit" t-value="total_price_unit+oper.price_per_meter"/>
+                        </t>
+                    </t>
+                    <t t-set="total_price_unit" t-value="total_price_unit+line.price_unit"/>
+                    <div class="row text-center" style="font-size:12px">
+                            <div class="col-1"/>
+                            <div class="col-3"/>
+                            <div class="col-1"/>
+                            <div class="col-3"/>
+<!--                            <div class="col-1"/>-->
+                            <div class="col-2" style="text-align: right"><t t-esc="'{:,.2f}'.format(total_price_unit)"/></div>
+                            <div class="col-2" style="font-weight:bold"><t t-esc="'{:,.2f}'.format(line.price_subtotal)"/></div>
+                        </div>
+                </div>
+            </t>
+        </div>
+    </template>
+
+    <record id="paperformat_sale_order" model="report.paperformat">
+        <field name="name">A4</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">90</field>
+        <field name="margin_bottom">22</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">75</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <record id="sale_order_inherit_report_ids" model="ir.actions.report">
+        <field name="name">Sale Order Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mrp_mo_from_so_single.sale_order_inherit_reports</field>
+        <field name="report_file">mrp_mo_from_so_single.sale_order_inherit_report</field>
+        <field name="print_report_name">'Orders Report'</field>
+        <field name="binding_model_id" ref="mrp_mo_from_so_single.model_sale_order"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_sale_order"/>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="coupon_program_view_form_common_inherit" model="ir.ui.view">
+            <field name="name">coupon.program.form.inherit</field>
+            <field name="model">coupon.program</field>
+            <field name="inherit_id" ref="coupon.coupon_program_view_form_common"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//group//group//field[@name='reward_product_id']" position="after">
+                    <field name="multiply_reward_product_ids" widget="many2many_tags"
+                           attrs="{'invisible': [('reward_type', 'in', ('discount', 'free_shipping'))], 'required': [('reward_type', '=', 'product')]}"
+                           placeholder="Select reward product"/>
+                    <field name="multiply_reward_product_uom_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//sheet//group//group//field[@name='reward_product_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('reward_type', 'in', ('discount', 'free_shipping'))]}</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+
+</odoo>

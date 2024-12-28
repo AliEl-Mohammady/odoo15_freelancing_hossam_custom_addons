@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_sale_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.discount</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='preview_sale_order']" position="after">
+                <button class="oe_stat_button" name="action_view_mrp_production_customes" type="object"
+                        icon="fa-wrench">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">MO</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="delivery_date" string="Delivery Date"/>
+                <field name="customer_ref" string="Customer Reference"/>
+                <field name="related_mo_ids" string="Related" widget="many2many_tags" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <button name="open_sale_order_subline" type="object" string="OP" icon="fa-list"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
+                <field name="area_type" string="النوع"/>
+                <field name="product_area" string="المساحة" attrs="{'invisible': [('area_type','!=','area')]}"  force_save="1"/>
+                <field name="product_area" string="المساحة الخطية" attrs="{'invisible': [('area_type','!=','linear')]}" force_save="1" />
+                <field name="line_area_total" string="المساحة الكلية"/>
+                <field name="operation_ids" string="عمليات التشغيل" force_save="1" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']/group[@name='note_group']" position="inside">
+                <p>Total Area</p>
+                <field name="total_areas" string="Total Area" placeholder="Total Area"/>
+                <field name="total_qty" string="Total Qty" placeholder="Total Qty"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                <button name="duplicate_order_line" type="object" icon="fa fa-copy"/>
+                <field name="serial_number" string="SNO."/>
+                <field name="desc_ids" string="التوصيف" force_save="1" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="product_width" string="العرض سم"/>
+                <field name="product_length" string="الطول سم"/>
+                <field name="subline_ids" widget="many2many-tags"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="sale_order_type_id" attrs="{'readonly': [('state','=','sale')]}"/>
+                <field name="receiving_place" attrs="{'readonly': [('state','=','sale')]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <button class="oe_highlight" name="multi_create_mo" type="object" string="Multi MO"
+                        attrs="{'invisible': [('related_mo_ids', '!=', [])]}"/>
+                <button class="oe_highlight" name="multi_cancel_mo" type="object" string="Cancel MO"
+                        attrs="{'invisible': [('related_mo_ids', '==', [])]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_move_line_tree" model="ir.ui.view">
+        <field name="name">sale.move.line.inherit</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="source"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="product_uom_qty"/>
+                <field name="product_width"/>
+                <field name="product_length"/>
+                <field name="product_area"/>
+                <field name="price_unit"/>
+                <field name="price_subtotal"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="seq_sale_order_glass_type" model="ir.sequence">
+        <field name="name">Sale Order</field>
+        <field name="code">sale.order.glass.code.type</field>
+        <field name="prefix">/</field>
+        <field name="padding">4</field>
+        <field name="number_increment" eval="1"/>
+    </record>
+
+
+</odoo>
+
+
+

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- TODO: Delete this file -->
+    <!-- Reception Report Labels -->
+    <template id="report_reception_qty_report_labels_mrp">
+        <t t-if="quantity" t-set="qtys" t-value="[int(q) for q in quantity.split(',')]"/>
+        <t t-else="" t-set="qtys" t-value="[1 for q in range(len(docs))]"/>
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page" dir="rtl">
+                    <t t-foreach="range(len(docs))" t-as="index">
+                        <t t-set="mo" t-value="docs[index]"/>
+                        <t t-set="x" t-value="0"/>
+                        <t t-set="qty" t-value="qtys[index]"/>
+                        <t t-foreach="range(qty)" t-as="j">
+                            <t t-foreach="range(mo.product_quantity)" t-as="q">
+                                <t t-set="x" t-value="x + 1"/>
+                                <style>
+                                    @font-face {
+                                    font-family: 'Arabic_bold,sans-serif';
+                                    src: url('\mrp_mo_from_so_single\static\src\fonts\Lalezar-Regular.ttf')
+                                    format('truetype');
+                                    @font-face {
+                                    font-family: 'Arabic_bold,sans-serif';
+                                    src: url('\mrp_mo_from_so_single\static\src\fonts\ReadexPro-Bold.ttf.ttf')
+                                    format('truetype');
+                                    }
+                                </style>
+                                <div style="border:1px solid black;height:450px;width:100%;margin-bottom:10px;font-family:Arabic_bold,sans-serif;font-weight:bold;overflow: hidden;">
+                                    <div class="row" style="height:80px;overflow: hidden;">
+                                        <div class="col-3">
+                                            <div style="padding-top:5px;text-align:right;padding-right:5px"
+                                                 t-field="mo.company_id"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <div dir="ltr" style="text-align:center;padding-top:5px;">
+<!--                                                <t t-esc="mo.sale_order_id.date_order"/>-->
+                                                <div style="font-size:22px" t-esc="mo.partner_id.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <img align="left"
+                                                 style="padding: 2px; height: 70px; width: 90px;"
+                                                 t-if="mo.company_id.logo"
+                                                 t-att-src="image_data_uri(mo.company_id.logo)"
+                                                 alt="Logo"/>
+                                        </div>
+                                    </div>
+                                    <div class="row"
+                                         style="height:70px;overflow: hidden;border-bottom:1px solid black;border-top:1px solid black;margin-right:2px;margin-left:2px;font-size:14px">
+                                        <div class="col-3 text-center"
+                                             style="border-left:1px solid black;padding-top:5px">
+                                            Width * Length
+                                            <br/>
+                                            <t t-esc="mo.product_length"/>
+                                            *
+                                            <t t-esc="mo.product_width"/>
+                                        </div>
+                                        <div class="col-2 text-center"
+                                             style="border-left:1px solid black;padding-top:5px;">
+                                            Order NO
+                                            <br/>
+                                            <t t-esc="mo.sale_order_id.name"/>
+                                        </div>
+                                        <div class="col-2 text-center"
+                                             style="border-left:1px solid black;padding-top:5px">
+                                            Quantity
+                                            <div dir="ltr" t-esc="mo.mo_arrangement"/>
+                                        </div>
+                                        <div class="col-2 text-center"
+                                             style="border-left:1px solid black;padding-top:5px">
+                                            OPT Num
+                                            <div dir="ltr" t-esc="mo.opt_num"/>
+                                        </div>
+                                        <div class="col-3 text-center" style="padding-top:5px">
+                                            <div style="font-weight:normal;color:#1d79d5">OPT Index</div>
+                                            <t t-esc="mo.opt_index"/>
+                                        </div>
+                                    </div>
+                                    <div class="row"
+                                         style="height:300px;margin-right:2px;margin-left:2px;overflow: hidden;">
+                                        <div class="col-9" style="border-left:1px solid black;padding-top:5px;">
+                                            <div style="height:200px;text-align:right">
+                                                <div style="font-size:23px" t-esc="mo.product_id.name"/>
+                                                <div style="font-size:23px"
+                                                     t-esc="mo.sale_order_id.sale_order_type_id.name"/>
+                                                <div style="border-bottom:3px solid #1d79d5;width:45%;"/>
+                                                <t t-foreach="mo.operations_ids" t-as="desc">
+                                                    <div style="font-weight:bold;padding-top:1px;font-size:18px"
+                                                         t-esc="desc.name"/>
+                                                </t>
+                                            </div>
+                                            <div class="row" style="text-align:left;overflow: hidden;">
+                                                <div class="col-5"/>
+                                                <div class="col-7">
+                                                    <div style="padding-left:15px" t-esc="mo.name"/>
+                                                    <div><img t-att-src="'/report/barcode/Code128/'+str(mo.random_qr_code_number)"
+                                                         style="width:280px;height:60px;text-align:left" alt="Barcode"/></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 text-center" style="padding-top:5px;font-size:14px">
+                                            <div style="border-bottom:1px solid black;margin-left:-2px">
+                                                <div style="font-weight:normal;color:#1d79d5">Serial Number</div>
+                                                <t t-esc="mo.serial_number"/>
+                                            </div>
+                                            <div style="border-bottom:1px solid black;padding-top:5px">
+                                                <div style="font-weight:normal;color:#1d79d5">Delivery Date</div>
+                                                <t t-if="mo.delivery_date" t-esc="mo.delivery_date"/>
+                                                <t t-else="" t-esc="datetime.datetime.now().strftime('%Y-%m-%d')"/>
+                                            </div>
+                                            <div style="border-bottom:1px solid black;padding-top:5px">
+                                                <div style="font-weight:normal;color:#1d79d5">Receive Place</div>
+                                                <span t-esc="mo.sale_order_id.receiving_place"/>
+                                            </div>
+                                            <div style="padding-top:5px">
+                                                <div style="font-weight:normal;color:#1d79d5">Description</div>
+                                                <div style="font-weight:bold;font-family:Arabic_bold,sans-serif;font-size:18px">
+                                                    <t t-foreach="mo.desc_ids" t-as="desc">
+                                                        <span  t-esc="desc.name"/>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+
+    <record id="paperformat_labels_mo_custom_signal" model="report.paperformat">
+        <field name="name">CustomLabelMO2</field>
+        <field name="format">custom</field>
+        <field name="page_height">107</field>
+        <field name="page_width">150</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">2</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="labels_production_order_custom" model="ir.actions.report">
+        <field name="name">Quantity Order Labels</field>
+        <field name="model">mrp.production</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mrp_mo_from_so_single.report_reception_qty_report_labels_mrp</field>
+        <field name="report_file">mrp_mo_from_so_single.report_reception_qty_report_labels_mrp</field>
+        <field name="paperformat_id" ref="mrp_mo_from_so_single.paperformat_labels_mo_custom_signal"/>
+        <field name="binding_model_id" ref="mrp_mo_from_so_single.model_mrp_production"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>
+
+
+
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+
+    <record id="view_stock_valuation_layer_tree_inherited" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.tree.inherit</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="product_width"/>
+                <field name="product_length"/>
+                <field name="product_area"/>
+                <field name="line_area_total"/>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

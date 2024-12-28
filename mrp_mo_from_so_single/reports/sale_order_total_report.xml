@@ -1,0 +1,186 @@
+<odoo>
+
+    <template id="header_footer_sale_total_temp">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+        <t t-if="not company">
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <style>
+            @font-face {
+            font-family: 'Phones_font,serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\tahoma.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\Lalezar-Regular.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\ReadexPro-Bold.ttf.ttf')
+            format('truetype');
+            }
+        </style>
+        <div class="header">
+            <div style="text-align:center;font-size: 25px; font-weight: bold;font-family:Arabic_bold,sans-serif;"><t t-esc="doc.company_id.name"/></div>
+            <div class="text-center">
+                <div class="row" style="border-bottom :1px solid #097dd5">
+                    <div class="col-3 mb4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="float-start"
+                             alt="Logo" width="160px" height="160px"/>
+                    </div>
+                    <div class="col-5"/>
+                    <div class="col-4 " style="font-family: Phones_font,serif;text-align:left">
+                        <span style="color: red">Tel :</span>
+                        <span style="color: blue"><t t-esc="doc.company_id.phone"/> </span>
+                        <br/>
+                        <span style="color: red">Tel :</span>
+                        <span style="color: blue"><t t-esc="doc.company_id.mobile"/></span>
+                        <br/>
+                        <span style="color: red">Site :</span>
+                        <a t-att-href="doc.company_id.website" target="_blank">
+                            <t t-esc="doc.company_id.website"/>
+                        </a>
+                        <br/>
+                        <span style="color: red">Headquarters :</span>
+                        <span style="color: #097dd5">
+                            <t t-esc="doc.company_id.street"/>,
+                            <t t-esc="doc.company_id.city"/>,
+                            <t t-esc="doc.company_id.state_id.name"/>,
+                            <t t-esc="doc.company_id.country_id.name"/>
+                        </span>
+                        <br/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="article o_report_layout_standard">
+            <t t-out="0"/>
+        </div>
+        <div class="footer o_standard_footer">
+            <div class="row"  style="border-top :3px dashed black;">
+                <div class="col-9">(Please refer the Terms and Conditions attach)</div>
+                <div class="col-3 text-end">
+                    <div t-if="report_type == 'pdf'" class="text-muted" style="font-size :20px;">
+                        Page:
+                        <span class="page"/>of
+                        <span class="topage"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="sale_order_total_inherit_reports">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="mrp_mo_from_so_single.report_sale_order_total_report_template_main"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_sale_order_total_report_template_main">
+        <div class="page">
+            <div class="oe_structure"/>
+            <style>
+            @font-face {
+            font-family: 'Phones_font,serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\tahoma.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\Lalezar-Regular.ttf')
+            format('truetype');
+            @font-face {
+            font-family: 'Arabic_bold,sans-serif';
+            src: url('\mrp_mo_from_so_single\static\src\fonts\ReadexPro-Bold.ttf.ttf')
+            format('truetype');
+            }
+        </style>
+            <div class="row">
+                <div class="col-8" dir="ltr" style="font-size: 21px; font-weight: bold;font-family:Arabic_bold,sans-serif;">
+                    <br/>
+                    <br/>
+                    Order # <t t-esc="doc.name"/>
+                </div>
+                <div class="col-4" style="text-align:left">
+                    <t t-esc="doc.partner_id.name"/><br/>
+                    <t t-esc="doc.partner_id.street"/><br/>
+                    <t t-esc="doc.partner_id.city"/><br/>
+                    <t t-esc="doc.partner_id.country_id.name"/><br/>
+                </div>
+            </div>
+            <div class="row"
+                 style="border-bottom :1px solid #097dd5;font-size: 19px; font-weight: bold;font-family:Arabic_bold,sans-serif;padding-top:15px">
+                <div class="col-4" style="text-align:left">الوصف</div>
+                <div class="col-2" style="text-align:center">الكمية</div>
+                <div class="col-3" style="text-align:center">المساحة الكلية</div>
+                <div class="col-3" style="text-align:center">الأجمالى</div>
+            </div>
+<!--            <t t-set="total_quantity" t-value="0"/>-->
+<!--            <t t-set="total_amount" t-value="0"/>-->
+<!--            <t t-set="total_area" t-value="0"/>-->
+<!--            <t t-foreach="doc.order_line" t-as="line">-->
+<!--                <t t-set="total_quantity" t-value="total_quantity+line.product_uom_qty"/>-->
+<!--                <t t-set="total_amount" t-value="total_amount+line.price_subtotal"/>-->
+<!--                <t t-set="total_area" t-value="total_area+line.line_area_total"/>-->
+<!--            </t>-->
+<!--             <div class="row" style="font-size: 15px; font-weight: bold;font-family:Arabic_bold,sans-serif;padding-top:10px">-->
+<!--                    <div class="col-4"><t t-esc="doc.name"/> </div>-->
+<!--                    <div class="col-2 text-center"><t t-esc="total_quantity"/></div>-->
+<!--                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(total_area)"/></div>-->
+<!--                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(total_amount)"/></div>-->
+<!--             </div>-->
+             <t t-foreach="doc.get_custom_report_data()" t-as="line">
+                 <div class="row" style="font-size: 12px;font-family:Arabic_bold,sans-serif;padding-top:10px">
+                    <div class="col-4"><t t-esc="line['product']"/> </div>
+                    <div class="col-2 text-center"><t t-esc="line['qty']"/></div>
+                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(line['area'])"/></div>
+                    <div class="col-3 text-center"><t t-esc="'{:,.2f}'.format(line['amount'])"/></div>
+                 </div>
+             </t>
+        </div>
+    </template>
+
+    <record id="paperformat_sale_order_total" model="report.paperformat">
+    <field name="name">A4</field>
+    <field name="default" eval="True"/>
+    <field name="format">A4</field>
+    <field name="page_height">0</field>
+    <field name="page_width">0</field>
+    <field name="orientation">Portrait</field>
+    <field name="margin_top">60</field>
+    <field name="margin_bottom">16</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False"/>
+    <field name="header_spacing">50</field>
+    <field name="dpi">90</field>
+</record>
+
+
+
+    <record id="sale_order_total_inherit_report_ids" model="ir.actions.report">
+        <field name="name">Sale Order Totally Report</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mrp_mo_from_so_single.sale_order_total_inherit_reports</field>
+        <field name="report_file">mrp_mo_from_so_single.sale_order_total_inherit_report</field>
+        <field name="print_report_name">'Orders Totally Report'</field>
+        <field name="binding_model_id" ref="mrp_mo_from_so_single.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+</odoo>

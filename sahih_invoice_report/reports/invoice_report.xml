@@ -1,0 +1,162 @@
+<odoo>
+    <data>
+        <template id="header_footer_temp2">
+            <div class="header">
+                <div>
+                    <div style="padding-left:50px;background-color: rgba(255, 255, 255, 0)" dir="ltr">
+                        <strong t-field="o.name"/>
+                    </div>
+                    <br/>
+                    <div dir="ltr" style="text-align:right;padding-right:230px;padding-top:6px;background-color: rgba(255, 255, 255, 0)">
+                        <strong t-field="o.partner_id"/>
+                    </div>
+                </div>
+            </div>
+            <div class="article o_report_layout_standard">
+                <t t-out="0"/>
+            </div>
+            <div class="footer o_standard_footer">
+                <t t-set="net_amount" t-value="0"/>
+                <t t-foreach="o.invoice_line_ids" t-as="order">
+                    <t t-set="total_amount" t-value="0"/>
+                    <t t-foreach="order.tax_ids" t-as="tax">
+                        <t t-set="total_amount"
+                           t-value="total_amount+order.price_subtotal+((order.price_subtotal*tax.amount)/100)"/>
+                    </t>
+                    <t t-set="net_amount" t-value="net_amount+total_amount"/>
+                </t>
+                <div dir="ltr" style="font-weight:bold;background-color: rgba(255, 255, 255, 0)" t-esc="'{0:.2f}'.format(float(net_amount))"/>
+                <br/>
+                <br/>
+                <div dir="ltr" class="row" style="background-color: rgba(255, 255, 255, 0)">
+                    <div class="col-6"></div>
+                    <div class="col-6"></div>
+                </div>
+            </div>
+        </template>
+
+        <template id="invoice_report_template">
+            <t t-call="web.html_container">
+                <t t-call="sahih_invoice_report.header_footer_temp2">
+                    <t t-foreach="docs" t-as="o">
+                        <t t-call="sahih_invoice_report.invoice_report_template_structure"/>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+        <template id="invoice_report_template_structure">
+            <div class="page" dir="rtl">
+                <div class="oe_structure"/>
+                <style>
+                    @font-face {
+                    font-family: 'Arabic_bold';
+                    src: url('/sale_order_report/static/src/Font/SST Arabic Bold.ttf') format('truetype');
+                    font-weight:bold;
+                    }
+                    @font-face { font-family: "SST_Arabic_Medium"; src: url("/sale_order_report/static/src/Font/SST
+                    Arabic Medium.ttf") format("truetype"); font-weight: normal; }
+                    @font-face { font-family:
+                    "SST_Arabic_Roman";
+                    src: url("/sale_order_report/static/src/Font/SST Arabic Roman.ttf") format("truetype");
+                    font-weight: normal; }
+                    .o_report {
+                    font-family:Arabic_bold
+                    }
+                </style>
+                <div style="margin-left:-20px;background-color: rgba(255, 255, 255, 0);padding-top:5px">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <t t-set="number" t-value="0"/>
+                            <t t-set="net_amount" t-value="0"/>
+                            <t t-foreach="o.invoice_line_ids" t-as="order">
+                                <t t-set="total_amount" t-value="0"/>
+                                <t t-if="order.display_type not in ['line_section','line_note']">
+                                    <t t-set="number" t-value="number+1"/>
+                                    <tr class="text-center"
+                                        style="font-weight:normal;font-family:SST_Arabic_Roman;font-size:12px">
+                                        <td>
+                                            <t t-if="number &lt; 10">
+                                                <div style="max-width: 10px;min-width: 10px;max-height: 24px;min-height: 24px;display:flex;align-items:center"
+                                                     t-esc="number"/>
+                                            </t>
+                                            <t t-else="">
+                                                <strong style="max-width: 10px;font-size:8px;min-width: 10px;max-height: 24px;min-height: 24px;display:flex;align-items:center"
+                                                        t-esc="number"/>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 305px;min-width: 305px;max-height: 24px;min-height: 24px;display:flex;align-items:center;font-weight:bold"
+                                                 t-esc="order.name"/>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 20px;min-width: 20px;max-height: 24px;min-height: 24px;display:flex;align-items:center"
+                                                 t-esc="order.quantity"/>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 85px;min-width: 85px;max-height: 24px;min-height: 24px;display:flex;align-items:center;"
+                                                 t-esc="order.price_unit"/>
+                                        </td>
+                                        <t t-foreach="order.tax_ids" t-as="tax">
+                                            <t t-set="total_amount"
+                                               t-value="total_amount+order.price_subtotal+((order.price_subtotal*tax.amount)/100)"/>
+                                        </t>
+                                        <td>
+                                            <div style="max-width: 115px;min-width: 115px;max-height: 24px;min-height: 24px;display:flex;align-items:center;"
+                                                 t-esc="'{0:.2f}'.format(float(total_amount))"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-else="">
+                                    <tr class="text-center"
+                                        style="font-weight:normal;font-family:SST_Arabic_Roman;font-size:12px">
+                                        <td>
+                                            <div style="max-width: 10px;min-width: 10px;max-height: 24px;min-height: 24px;display:flex;align-items:center"/>
+                                        </td>
+                                        <td>
+                                            <div style="max-width: 305px;min-width: 305px;max-height: 24px;min-height: 24px;display:flex;align-items:center;font-weight:bold"
+                                                 t-esc="order.name"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-set="net_amount" t-value="net_amount+total_amount"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+
+
+        <record id="paperformat_invoices_sahih" model="report.paperformat">
+            <field name="name">Invoice Paper Format Sahih</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">88</field>
+            <field name="margin_bottom">65</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="disable_shrinking" eval="True"/>
+            <field name="dpi">90</field>
+        </record>
+
+
+        <record id="sahih_invoices_report_template_actions" model="ir.actions.report">
+            <field name="name"> طباعة فاتورة ضريبية</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sahih_invoice_report.invoice_report_template</field>
+            <field name="report_file">sahih_invoice_report.invoice_report_template</field>
+            <field name="print_report_name">'Sahih Invoice report'</field>
+            <field name="binding_model_id" ref="sahih_invoice_report.model_account_move"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="sahih_invoice_report.paperformat_invoices_sahih"/>
+        </record>
+    </data>
+</odoo>
